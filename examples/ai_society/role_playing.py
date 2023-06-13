@@ -15,15 +15,20 @@ from colorama import Fore
 
 from camel.agents import RolePlaying
 from camel.utils import print_text_animated
+from camel.typing import TaskType
+import openai, os
 
 
 def main() -> None:
-    task_prompt = "Develop a trading bot for the stock market"
+    task_prompt = """Create an interactive role-playing session of teacher and student collaborating on solving the following math problem:
+<Problem>: Lisa, Jack, and Tommy earned $60 from washing cars all week. However, half of the $60 was earned by Lisa. Tommy earned half of what Lisa earned. How much more money did Lisa earn than Tommy?
+<Solution>: 15    
+"""
     role_play_session = RolePlaying(
-        "Python Programmer",
-        "Stock Trader",
-        task_prompt=task_prompt,
-        with_task_specify=True,
+        "Teacher",
+        "Student",
+        task_type = TaskType.EDUCATION,
+        with_task_specify=False,
     )
 
     print(
@@ -34,12 +39,13 @@ def main() -> None:
 
     print(Fore.YELLOW + f"Original task prompt:\n{task_prompt}\n")
     print(
-        Fore.CYAN +
-        f"Specified task prompt:\n{role_play_session.specified_task_prompt}\n")
+         Fore.CYAN +
+         f"Specified task prompt:\n{role_play_session.specified_task_prompt}\n")
     print(Fore.RED + f"Final task prompt:\n{role_play_session.task_prompt}\n")
-
-    chat_turn_limit, n = 50, 0
+    chat_turn_limit, n = 10, 0
     assistant_msg, _ = role_play_session.init_chat()
+    #print(assistant_msg)
+
     while n < chat_turn_limit:
         n += 1
         assistant_response, user_response = role_play_session.step(
@@ -59,7 +65,7 @@ def main() -> None:
         print_text_animated(Fore.BLUE +
                             f"AI User:\n\n{user_response.msg.content}\n")
         print_text_animated(Fore.GREEN +
-                            f"AI Assistant:\n\n{assistant_msg.content}\n")
+                            f"AI Assistant:\n\n{assistant_response.msg.content}\n")
 
         if "CAMEL_TASK_DONE" in user_response.msg.content:
             break

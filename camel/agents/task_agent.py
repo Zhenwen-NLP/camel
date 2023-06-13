@@ -51,6 +51,7 @@ class TaskSpecifyAgent(ChatAgent):
         word_limit: int = DEFAULT_WORD_LIMIT,
     ) -> None:
         if task_specify_prompt is None:
+            #print(task_type)
             task_specify_prompt_template = PromptTemplateGenerator(
             ).get_task_specify_prompt(task_type)
 

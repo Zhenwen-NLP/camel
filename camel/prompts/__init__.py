@@ -13,6 +13,7 @@
 # =========== Copyright 2023 @ CAMEL-AI.org. All Rights Reserved. ===========
 from .base import TextPrompt, CodePrompt, TextPromptDict
 from .ai_society import AISocietyPromptTemplateDict
+from .education import EducationPromptTemplateDict
 from .code import CodePromptTemplateDict
 from .misalignment import MisalignmentPromptTemplateDict
 from .translation import TranslationPromptTemplateDict
@@ -33,4 +34,5 @@ __all__ = [
     'TaskPromptTemplateDict',
     'PromptTemplateGenerator',
     'SolutionExtractionPromptTemplateDict',
+    'EducationPromptTemplateDict',
 ]

@@ -14,6 +14,7 @@
 from typing import Any, Dict
 
 from camel.prompts import (
+    EducationPromptTemplateDict,
     AISocietyPromptTemplateDict,
     CodePromptTemplateDict,
     EvaluationPromptTemplateDict,
@@ -22,6 +23,7 @@ from camel.prompts import (
     TextPromptDict,
     TranslationPromptTemplateDict,
 )
+
 from camel.typing import TaskType
 
 
@@ -50,4 +52,6 @@ class TaskPromptTemplateDict(Dict[Any, TextPromptDict]):
             EvaluationPromptTemplateDict(),
             TaskType.SOLUTION_EXTRACTION:
             SolutionExtractionPromptTemplateDict(),
+            TaskType.EDUCATION:
+            EducationPromptTemplateDict(),
         })

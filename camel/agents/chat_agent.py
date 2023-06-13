@@ -209,7 +209,8 @@ class ChatAgent(BaseAgent):
                 ["max_tokens_exceeded"],
                 num_tokens,
             )
-
+        if '<PROBLEM_SOLVED>' in str(output_messages):
+            self.terminated = True
         return ChatAgentResponse(output_messages, self.terminated, info)
 
     def __repr__(self) -> str:

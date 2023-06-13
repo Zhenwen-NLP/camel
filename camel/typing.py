@@ -35,6 +35,7 @@ class TaskType(Enum):
     TRANSLATION = "translation"
     EVALUATION = "evaluation"
     SOLUTION_EXTRACTION = "solution_extraction"
+    EDUCATION = "education"
     DEFAULT = "default"
 
 

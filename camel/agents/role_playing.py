@@ -93,24 +93,24 @@ class RolePlaying:
         self.task_type = task_type
 
         if with_task_specify:
+            
             task_specify_meta_dict = dict()
-            if self.task_type in [TaskType.AI_SOCIETY, TaskType.MISALIGNMENT]:
+            if self.task_type in [TaskType.AI_SOCIETY, TaskType.MISALIGNMENT, TaskType.EDUCATION]:
                 task_specify_meta_dict.update(
                     dict(assistant_role=assistant_role_name,
                          user_role=user_role_name))
-            if extend_task_specify_meta_dict is not None:
-                task_specify_meta_dict.update(extend_task_specify_meta_dict)
-
-            task_specify_agent = TaskSpecifyAgent(
-                self.mode_type,
-                task_type=self.task_type,
-                **(task_specify_agent_kwargs or {}),
-            )
-            self.specified_task_prompt = task_specify_agent.step(
-                task_prompt,
-                meta_dict=task_specify_meta_dict,
-            )
-            task_prompt = self.specified_task_prompt
+            # task_specify_agent = TaskSpecifyAgent(
+            #     self.mode_type,
+            #     task_type=self.task_type,
+            #     **(task_specify_agent_kwargs or {}),
+            # )
+            # self.specified_task_prompt = task_specify_agent.step(
+            #     task_prompt,
+            #     meta_dict=task_specify_meta_dict,
+            # )
+            #task_prompt = self.specified_task_prompt
+            
+            self.specified_task_prompt = task_prompt
         else:
             self.specified_task_prompt = None
 
@@ -201,9 +201,7 @@ class RolePlaying:
         # Send the system messages again to the agents using chat messages
         assistant_msg = AssistantChatMessage(
             role_name=self.assistant_sys_msg.role_name,
-            content=(f"{self.user_sys_msg.content}. "
-                     "Now start to give me instructions one by one. "
-                     "Only reply with Instruction and Input."))
+            content=(f"{self.user_sys_msg.content}. "))
 
         user_msg = UserChatMessage(role_name=self.user_sys_msg.role_name,
                                    content=f"{self.assistant_sys_msg.content}")
@@ -268,6 +266,7 @@ class RolePlaying:
         """
         user_response = self.user_agent.step(
             assistant_msg.to_user_chat_message())
+        #print(assistant_msg.to_user_chat_message())
         if user_response.terminated or user_response.msgs is None:
             return (ChatAgentResponse([], False, {}),
                     ChatAgentResponse([], user_response.terminated,
@@ -282,6 +281,7 @@ class RolePlaying:
                                       assistant_response.info),
                     ChatAgentResponse([user_msg], False, user_response.info))
         assistant_msg = self.process_messages(assistant_response.msgs)
+
         self.assistant_agent.update_messages(assistant_msg)
 
         return (
